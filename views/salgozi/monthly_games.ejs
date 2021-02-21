@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>살곶이정 삭회이력</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-3.5.1.min.js"></script>
+    <script src="/javascripts/search_properties.js"></script>
+    <script src="/javascripts/search_common.js"></script>
+    <script>
+      $(document).ready(function() {
+        searchDatas('monthly_games', 'search_result');
+      });
+
+      function add_game() {
+        manipulateAjaxById('add', 'monthly_games', params, function(result) {
+            callAjaxProtocol('monthly_games', params, 'search_result');
+          });
+      }
+
+    </script>
+
+  </head>
+  <body>
+    <h3><a href="/salgozi/">홈으로</a></h3>
+    <h1>살곶이정 삭회이력 </h1>
+    <button onclick="add_game();">대회추가</button>
+    <div id="search_result"></div>
+  </body>
+</html>

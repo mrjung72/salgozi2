@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>살곶이정 삭회 개인전 작대</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-3.5.1.min.js"></script>
+    <script src="/javascripts/search_properties.js"></script>
+    <script src="/javascripts/search_common.js"></script>
+    <script src="/javascripts/search_utils.js"></script>
+    <script>
+      let countByRow = 5;
+      let sqlGroupCount 
+        = " select count(*) group_count "
+        + " from ( "
+        + "   select DISTINCT shooting_group "
+        + "   from monthly_game_shooting_group "
+        + "   where gnum = (select gnum from monthly_game_master where status = 'P') "
+        + " ) ";
+
+      getDataBySql(sqlGroupCount, [], function(result) {
+        $("#templet_search_result_shooting_group").html(getHtmlForUnitTeamBlock(result[0].group_count, countByRow));        
+      });
+
+      
+      function createBlockByShootingGroup() {
+
+        getDataBySql(sqlGroupCount, [], function(result) {
+          for (let i = 0; i < result[0].group_count; i++) {
+            searchDatas('game_shooting_group_by_team', 'search_result_by_team_'+(i+1), JSON.stringify({shooting_group:(i+1)}));
+          }
+        });
+      }
+
+      $(document).ready(function() {
+
+        $("#game_sequence_number").text('<%=game_num%>');
+
+        createBlockByShootingGroup();
+
+        $("#deleteGameGroup").click(function() {
+          let params = {"gnum":$("#gnum").val()};
+          $("#templet_search_result_shooting_group").empty();
+          manipulateAjaxById('delete', 'game_shooting_group', params, function(result) {
+            callAjaxProtocol('game_shooting_group', params, 'search_result');
+          });
+        });
+
+        $("#createGameGroup").click(function() {
+
+          let gcnt = $("#group_count").val();
+          if(isNaN(gcnt)) {
+            alert('작대수를 숫자형식으로 입력해주세요! (' + gcnt + ')');
+            return;
+          }
+          else if(gcnt < 1) {
+            alert('작대수를 0보다 큰 값으로 입력해주세요! (' + gcnt + ')');
+            return;
+          }
+
+          let params = {"gnum":$("#gnum").val(), "group_count":$("#group_count").val()};
+          $("#templet_search_result_shooting_group").html('<table border=1><tr><td align=center><h1>화면을 새로고침(F5) 해주세요!</h1></td></tr></table>');
+          manipulateAjaxById('add', 'game_shooting_group', params, function(result) {
+            $("#templet_search_result_shooting_group").html(getHtmlForUnitTeamBlock($("#group_count").val(), countByRow));
+            createBlockByShootingGroup();
+          });
+        });
+
+      });
+
+      function changeGame() {
+        let gnum = $("#gnum option:selected").val();
+
+        searchDatas('game_shooting_group', 'search_result');
+        $("#game_sequence_number").text(gnum);
+      }
+
+    </script>
+
+  </head>
+  <body>
+    <h3><a href="/salgozi/">홈으로</a></h3>
+    <div valign="top">
+      <select id="gnum" onchange="changeGame();">
+        <option value="293">293회</option>
+        <option value="292">292회</option>
+        <option value="291">291회</option>
+      </select>&nbsp;<button id="deleteGameGroup">작대 초기화</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type=text id="group_count" size="1" maxlength="2"/>대&nbsp;<button id="createGameGroup">작대 생성</button>
+    </div>
+    <br><br>
+    <h1>제 <span id="game_sequence_number"></span>회 살곶이정 삭회 개인전 작대</h1>
+    <div align="center" id="templet_search_result_shooting_group"></div>
+    <br><br><br><br><br>
+    <h1>전체 조회</h1>
+    <table>
+      <tr>
+        <td valign="top">
+          <select id="search_column_game_shooting_group">
+            <option value="name">이름</option>
+          </select>&nbsp;
+          <input id="search_value_game_shooting_group" onkeyup="searchDatas('game_shooting_group', 'search_result');" type="text" size="10"/>
+          <br>
+          <div id="search_result"></div>
+          <br><br><br>
+      
+        </td>
+        <td>&nbsp;</td>
+        <td valign="top" align="center">
+        </td>
+      </tr>
+    </table>
+
+  </body>
+</html>

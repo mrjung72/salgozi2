@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>살곶이정 삭회 단체전 작대</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-3.5.1.min.js"></script>
+    <script src="/javascripts/search_properties.js"></script>
+    <script src="/javascripts/search_common.js"></script>
+    <script src="/javascripts/search_utils.js"></script>
+    <script>
+
+      getDataBySql('select count(*) cnt from team_jakdae_status', [], function(result) {
+        $("#templet_search_result_team_jakdae_by_team").html(getHtmlForUnitTeamBlock(result[0].cnt, 5));        
+      });
+
+      $(document).ready(function() {
+        $("#game_sequence_number").text('<%=game_num%>');
+        let gnum = $("#gnum option:selected").val();
+
+        $("#deleteGameGroup").click(function() {
+          $("#templet_search_result_team_jakdae_by_team").empty();
+          let params = {"gnum":$("#gnum").val()};
+          manipulateAjaxById('delete', 'select_team_jakdae', params, function(result) {
+            callAjaxProtocol('select_team_jakdae', params, 'search_result');
+          });
+          manipulateAjaxById('delete', 'team_jakdae_status', params, function(result) {});
+        });
+
+        getDataBySql('select count(*) cnt from team_jakdae_status', [], function(result) {
+          for (let i = 0; i < result[0].cnt; i++) {
+            searchDatas('select_team_jakdae_by_team', 'search_result_by_team_'+(i+1), JSON.stringify({team_num:(i+1)}));
+          }
+        });
+
+      });
+
+      function changeGame() {
+        let gnum = $("#gnum option:selected").val();
+
+        searchDatas('select_team_jakdae', 'search_result');
+        $("#game_sequence_number").text(gnum);
+      }
+    </script>
+
+  </head>
+  <body>
+    <h3>
+      <a href="/salgozi/">홈으로</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <select id="gnum" onchange="changeGame();">
+        <option value="293">293회</option>
+      </select>&nbsp;<button id="deleteGameGroup">작대 초기화</button>
+    </h3>
+    <h1>제 <span id="game_sequence_number"></span>회 살곶이정 삭회 단체전 작대</h1>
+    <div align="center" id="templet_search_result_team_jakdae_by_team"></div>
+    <br><br><br><br><br><br>
+    <h1>전체목록</h1>
+    <table>
+      <tr>
+        <td valign="top">
+          <select id="search_column_select_team_jakdae">
+            <option value="name">이름</option>
+            <option value="team_num">작대</option>
+          </select>&nbsp;
+          <input id="search_value_select_team_jakdae" onkeyup="searchDatas('select_team_jakdae', 'search_result');" type="text" size="10" maxlength="5"/>
+          <br>
+          <div id="search_result"></div>
+        </td>
+        <td>&nbsp;</td>
+        <td valign="top" align="center">
+        </td>
+      </tr>
+    </table>
+    <br><br><br>
+  </body>
+</html>
