@@ -48,7 +48,7 @@
        name:               {search_column:"name"              ,isNum:false ,isModi:false  ,isBold:true, align:"center" ,orderby:"asc"  ,name:"이름"}
       ,position_name:      {search_column:"position_name"     ,isNum:false ,isModi:false  ,align:"center" ,orderby:"asc"  ,name:"호칭"}
       // ,mid:                {search_column:"mid"               ,isNum:false ,isModi:false  ,align:"center" ,orderby:"asc"  ,name:"mid"     }
-      // ,age:                {search_column:"age"               ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"나이"     }
+      ,age:                {search_column:"age"              ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"나이"     }
       // ,shooting_priority:  {search_column:"shooting_priority" ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"팔찌동"   }
       ,gakgung:            {search_column:"gakgung"           ,isNum:true ,isModi:true  ,align:"right"  ,isSum:true ,orderby:"asc"  ,name:"각죽" }
       ,round1_hits:         {search_column:"round1_hits"      ,isNum:true ,isModi:true  ,isBold:true, align:"right"  ,isSum:true ,orderby:"asc"  ,name:"1순" }
@@ -57,6 +57,7 @@
       ,real_hits:           {search_column:"real_hits"        ,isNum:true ,isModi:false  ,isBold:true, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"본시수"}
       ,bonus:               {search_column:"bonus"            ,isNum:true ,isModi:false  ,align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"덤"}
       ,total_hits:          {search_column:"total_hits"       ,isNum:true ,isModi:false  ,isBold:true, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"총시수"}
+      ,apply_team_game:     {search_column:"apply_team_game"  ,isNum:true ,isModi:true  ,isBold:false, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"단체전"}
       // ,ranking:             {search_column:"ranking"          ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"순위"}
       // ,shooting_group:      {search_column:"shooting_group"   ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"작대"}
       // ,shotting_seq:        {search_column:"shotting_seq"     ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"순서"}

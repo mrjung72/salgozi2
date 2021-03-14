@@ -29,8 +29,13 @@
         searchDatas('game_personal_score', 'search_result');
       });
       
-      function changeGame() {
+      function changeSearchCondition(obj) {
+
         let gnum = $("#gnum option:selected").val();
+        if(obj.id == 'sort_category_game_personal_score') {
+          $("#sort_column_game_personal_score").val('');
+          $("#sort_by_game_personal_score").val('');
+        }
         
         searchDatas('game_personal_score', 'search_result');
         $("#game_sequence_number").text(gnum);
@@ -46,10 +51,15 @@
     <h1>제 <span id="game_sequence_number"></span>회 살곶이정 삭회 개인성적</h1>
 
       <div align="center">
-        <select id="gnum" onchange="changeGame();">
+        <select id="gnum" onchange="changeSearchCondition(this);">
           <option value="293">293회</option>
           <option value="292">292회</option>
           <option value="291">291회</option>
+        </select>&nbsp;
+        <select id="sort_category_game_personal_score" onchange="changeSearchCondition(this);">
+          <option value="order_by_real_hits">본시수순</option>
+          <option value="order_by_total_hits">총시수순</option>
+          <option value="order_by_real_hits_bonus">본시수순(덤)</option>
         </select>&nbsp;
         <select id="search_column_game_personal_score">
           <option value="name">이름</option>

@@ -117,6 +117,19 @@ function applyMembersToGame(gnum, memberIds, callback) {
   });
 }
 
+function addMemberToShootingGroup(gnum, memberIds, callback) {
+
+  let memStr = memberIds.join("', '");
+  let sql = " insert into monthly_game_shooting_group "
+          + " select "+gnum+" gnum, mid, 0 group_num, 999 shooting_priarity "
+          + " from members m "
+          + " where mid in ('" + memStr + "') ";
+  manupulateDatas(sql, function(result) {
+    callback(result);
+  });
+
+}
+
 function applyShootingGroup(gnum, group_count, callback) {
 
   let sql = " insert into monthly_game_shooting_group "
@@ -198,6 +211,7 @@ router.get('/game_personal_score', function(req, res, next) {
           + "     select s.*, m.name, m.position_name, m.shooting_priority "
           + "           ,(strftime('%Y', date('now', 'localtime')) - strftime('%Y', birthday) + 1) age "
           + "           ,(s.round1_hits + s.round2_hits + s.round3_hits) real_hits "
+          + "           ,case when age >= 65 or female = 1 then 1 else 0 end gold_bonus "
           + "           ,(s.round1_hits + s.round2_hits + s.round3_hits + s.bonus) total_hits "
           + "     from monthly_game_personal_score s, members m "
           + "     where s.mid = m.mid "
@@ -206,7 +220,15 @@ router.get('/game_personal_score', function(req, res, next) {
           + " ) "
           + " where 1 = 1 ";
 
-  var sqlQuery = getSqlQuery(sql, req.query.params, 'total_hits desc, real_hits desc, gakgung desc, round1_hits desc');
+  let sortByCategory = ' total_hits desc';
+  if(req.query.params.sort_category === 'order_by_real_hits')
+    sortByCategory = ' real_hits desc';
+  else if(req.query.params.sort_category === 'order_by_real_hits_bonus')
+    sortByCategory = ' (real_hits + gold_bonus) desc';
+
+  sortByCategory += ', gakgung desc, round1_hits desc, round2_hits desc, round3_hits desc';
+
+  var sqlQuery = getSqlQuery(sql, req.query.params, sortByCategory);
   selectDatas(sqlQuery, [], function(result) {
     responseSearchResult(req, res, 'salgozi/game_score_personal', result);
   });
@@ -378,6 +400,12 @@ router.get('/add', function(req, res, next) {
       res.json(result);
     });
   }
+  else if(req.query.categoryId == 'add_member_to_game_shooting_group') {
+
+    addMemberToShootingGroup(req.query.params.gnum, req.query.params.memberIds, function(result) {
+      res.json(result);
+    });
+  }
   else {
     res.json({isSuccess:false, rtnMsg:req.query.categoryId + "는 기정의된 카테고리ID가 아닙니다.!"});
   }
@@ -442,6 +470,7 @@ function getModifySql(categoryId, queryParams) {
         + "    ,round1_hits = " + queryParams.round1_hits
         + "    ,round2_hits = " + queryParams.round2_hits
         + "    ,round3_hits = " + queryParams.round3_hits
+        + "    ,apply_team_game = " + queryParams.apply_team_game
         + " where gnum = '"+queryParams.gnum+"'"
         + "   and mid = '"+queryParams.mid+"' "
     ,game_members:

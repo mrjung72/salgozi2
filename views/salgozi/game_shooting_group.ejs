@@ -15,6 +15,7 @@
         + "   select DISTINCT shooting_group "
         + "   from monthly_game_shooting_group "
         + "   where gnum = (select gnum from monthly_game_master where status = 'P') "
+        + "     and shooting_group > 0 "
         + " ) ";
 
       getDataBySql(sqlGroupCount, [], function(result) {
@@ -28,6 +29,7 @@
           for (let i = 0; i < result[0].group_count; i++) {
             searchDatas('game_shooting_group_by_team', 'search_result_by_team_'+(i+1), JSON.stringify({shooting_group:(i+1)}));
           }
+          searchDatas('game_shooting_group_by_team', 'search_result_by_team_0', JSON.stringify({shooting_group:0}));
         });
       }
 

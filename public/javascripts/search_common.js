@@ -47,6 +47,8 @@ function getSortTypeByColumn(categoryId, orderbycolumn) {
 
 function callAjaxProtocol(categoryId, selectParams, resultBlockId) {
 
+  let gnum = $("#gnum option:selected").val();
+
   if(!selectParams.col_name) {
     selectParams.col_name = $("#search_column_"+categoryId).val();
     selectParams.svalue = $("#search_value_"+categoryId).val();
@@ -56,6 +58,7 @@ function callAjaxProtocol(categoryId, selectParams, resultBlockId) {
     $("#sort_by_"+categoryId).val(selectParams.sort_by);
   }
   else {
+    selectParams.sort_category = $("#sort_category_"+categoryId+" option:selected").val();
     selectParams.sort_column = $("#sort_column_"+categoryId).val();
     selectParams.sort_by = $("#sort_by_"+categoryId).val();
   }
@@ -66,7 +69,7 @@ function callAjaxProtocol(categoryId, selectParams, resultBlockId) {
     data: {protocol:'json', params:selectParams},
     success: function(data) {
       if(data.isSuccess) {
-        setResultDatas(categoryId, data.rows, resultBlockId, selectParams);
+        setResultDatas(gnum, categoryId, data.rows, resultBlockId, selectParams);
       }
       else {
         $("#"+resultBlockId).text(data.rtnMsg);
@@ -136,7 +139,7 @@ function setTitle(categoryId, resultBlockId) {
   return list;
 }
 
-function setResultDatas(categoryId, dataRows, resultBlockId, selectParams) {
+function setResultDatas(gnum, categoryId, dataRows, resultBlockId, selectParams) {
 
   var list = '<table border=1>';
   list += setTitle(categoryId, resultBlockId);
@@ -202,7 +205,7 @@ function setResultDatas(categoryId, dataRows, resultBlockId, selectParams) {
   });
 
   if(BlockDefine[categoryId].isSum) {
-    list += '<tr bgcolor="#D6D88B">';
+    list += '<tr id="'+gnum+'_0000_1" class="'+resultBlockId+'" bgcolor="#D6D88B">';
     list += '<td><b>계</b></td>';
     Object.keys(BlockDefine[categoryId].columns).forEach((columnId, i) => {
 

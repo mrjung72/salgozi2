@@ -42,6 +42,7 @@ class CreateTeamJakdae {
             + "   from monthly_game_personal_score s, members m "
             + "  where s.mid = m.mid "
             + "   and s.gnum = :1 "
+            + "   and s.apply_team_game > 0 "
             + " window win as (order by shooting_priority, age desc) ";
         
         // 가상의 더미선수를 적용하는 쿼리문.
@@ -60,6 +61,7 @@ class CreateTeamJakdae {
             + " where s.mid = j.mid "
             + " and s.mid = m.mid "
             + " and s.gnum = :1 "
+            + " and s.apply_team_game > 0 "
             + " and j.team_num is null "
             + " and s.gakgung = 1 "
             + " order by (round1_hits+round2_hits+round3_hits) desc, j.shooting_priority, age desc ";
@@ -71,6 +73,7 @@ class CreateTeamJakdae {
             + " where s.mid = j.mid "
             + " and s.mid = m.mid "
             + " and s.gnum = :1 "
+            + " and s.apply_team_game > 0 "
             + " and j.team_num is null "
             + " and (round1_hits + round2_hits + round3_hits) <= :2 "
             + " order by (round1_hits+round2_hits+round3_hits) desc, j.shooting_priority, age desc "
@@ -131,6 +134,7 @@ class CreateTeamJakdae {
             + "        ,ifnull(count(*), 0) total_players "
             + " from monthly_game_personal_score " 
             + " where gnum = :gnum "
+            + "   and apply_team_game > 0 "
             + "   and mid not like 'dummy%' ";
 
     }
@@ -262,13 +266,21 @@ class CreateTeamJakdae {
             this.logErrorMsg(this.gnum + '회차 삭회에 참가한 선수가 존재하지 않습니다.!!!');
         }
 
+        // 3순 평균시수를 3,6,9로 맞춘다. (1순시수를 정수로 맞추기 위해 ...)
+        if(dummyPlayers.avg_score > 8)
+            dummyPlayers.avg_score = 9;
+        else if(dummyPlayers.avg_score > 5)
+            dummyPlayers.avg_score = 6;
+        else if(dummyPlayers.avg_score > 2)
+            dummyPlayers.avg_score = 3;
+
         await this.sqliteSync.run("delete from monthly_game_personal_score where mid like 'dummy%'", []);
         let addPlayersCount = (dummyPlayers.add_player==this.team_count)?0:dummyPlayers.add_player;
         await this.sqliteSync.run(this.insertSqlDummyPlayers, [dummyPlayers.avg_score, this.gnum, addPlayersCount]);
     }
 
     async getTotalPlayersCount() {
-        return await this.sqliteSync.get('select count(*) cnt from monthly_game_personal_score where gnum = :gnum ', [this.gnum]);
+        return await this.sqliteSync.get('select count(*) cnt from monthly_game_personal_score where gnum = :gnum and apply_team_game > 0 ', [this.gnum]);
     }
 
     async logErrorMsg(msg) {

@@ -12,8 +12,8 @@
       });
 
       function add_game() {
-        manipulateAjaxById('add', 'monthly_games', params, function(result) {
-            callAjaxProtocol('monthly_games', params, 'search_result');
+        manipulateAjaxById('add', 'monthly_games', {}, function(result) {
+            callAjaxProtocol('monthly_games', {}, 'search_result');
           });
       }
 

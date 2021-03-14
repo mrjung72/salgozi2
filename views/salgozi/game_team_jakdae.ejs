@@ -30,6 +30,7 @@
           for (let i = 0; i < result[0].cnt; i++) {
             searchDatas('select_team_jakdae_by_team', 'search_result_by_team_'+(i+1), JSON.stringify({team_num:(i+1)}));
           }
+          searchDatas('select_team_jakdae_by_team', 'search_result_by_team_0', JSON.stringify({team_num:0}));
         });
 
       });
@@ -48,7 +49,7 @@
       <a href="/salgozi/">홈으로</a>&nbsp;&nbsp;&nbsp;&nbsp;
       <select id="gnum" onchange="changeGame();">
         <option value="293">293회</option>
-      </select>&nbsp;<button id="deleteGameGroup">작대 초기화</button>
+      </select>
     </h3>
     <h1>제 <span id="game_sequence_number"></span>회 살곶이정 삭회 단체전 작대</h1>
     <div align="center" id="templet_search_result_team_jakdae_by_team"></div>

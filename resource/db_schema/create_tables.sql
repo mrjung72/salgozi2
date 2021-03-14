@@ -47,6 +47,7 @@ create table monthly_game_personal_score (
 	,ranking integer default 0			-- 순위
 	,shooting_group integer default 0	-- 작대
 	,shotting_seq integer default 0		-- 사대순서
+	,apply_team_game integer default 1	-- 단체전참가여부(1-참가, 0-불참)
 	,msg text                           -- 비고
 	,primary key (gnum, mid)
 	,foreign key (gnum) references monthly_game_master (gnum)

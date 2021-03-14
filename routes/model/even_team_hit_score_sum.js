@@ -62,6 +62,7 @@ class EvenTeamHitScoreSum {
                 + "    and j.gnum = s.gnum " 
                 + "    and j.mid = s.mid " 
                 + "    and s.gakgung = 1 " 
+                + "    and s.apply_team_game > 0 "
                 + "    and j.upt_number > :total_team_count ";
             let gakgungPlayers = await this.sqliteSync.all(selectSqlGakgungPlayers, [gnum, team_num, team_count]);
     
@@ -98,6 +99,7 @@ class EvenTeamHitScoreSum {
             + "           where gnum = :gnum "
             + "             and (round1_hits + round2_hits + round3_hits) between :low_score and :high_score "
             + "             and gakgung = 0 "
+            + "             and apply_team_game > 0 "
             + "         ) "
             + "     and upt_number > :apply_num ";
     

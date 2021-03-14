@@ -61,7 +61,18 @@ function getHtmlForUnitTeamBlock(cnt, columns_count) {
         html += '</td>';
         html += '<td>&nbsp;</td>';
     }
+    if(cnt%columns_count == 0) {
+        html += '</tr>';
+        html += '<tr>';
+    }
+    html += '<td valign="top" align="center">';
+    html += '<h2>[미적용]</h2>';
+    html += `<div id="search_result_by_team_0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>`;
+    html += '</td>';
+    html += '<td>&nbsp;</td>';
+
     html += '</tr>';
     html += '</table>';
+
     return html;
 }

@@ -23,8 +23,11 @@
 
           let params = {"gnum":$("#gnum").val(), "memberIds":applyMembers};
           manipulateAjaxById('add', 'game_members', params, function(result) {
-            callAjaxProtocol('members', params, 'result_datas');
-            callAjaxProtocol('game_members', params, 'game_join_members');
+            manipulateAjaxById('add', 'add_member_to_game_shooting_group', params, function(result) {
+
+              callAjaxProtocol('members', params, 'result_datas');
+              callAjaxProtocol('game_members', params, 'game_join_members');
+            });
           });
 
         });
