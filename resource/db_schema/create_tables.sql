@@ -1,6 +1,3 @@
-/* 데이터베이스를 선택한다. */
-.open ../../database/salgozi.sqlite3
-
 
 /* 회원명부*/
 drop table if exists members ;
@@ -85,8 +82,6 @@ create table monthly_game_team_score (
 	,foreign key (mid) references members (mid)
 );
 
-
-SELECT DATE('NOW', 'localtime');
 
 /* 단체전 작대 */
 DROP TABLE IF exists monthly_game_team_jakdae;
