@@ -309,7 +309,7 @@ function selectGameShootingGroup(searchCond, callback) {
   if(searchCond.shooting_group && searchCond.shooting_group != '')
     sql += " and g.shooting_group = " + searchCond.shooting_group;
 
-  var sqlQuery = getSqlQuery(sql, searchCond, 'g.shooting_group, g.shooting_seq');
+  var sqlQuery = getSqlQuery(sql, searchCond, 'g.shooting_group, g.shooting_seq, s.age');
   selectDatas(sqlQuery, [], function(result) {
       callback(result);
   });

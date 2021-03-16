@@ -57,7 +57,7 @@
       ,real_hits:           {search_column:"real_hits"        ,isNum:true ,isModi:false  ,isBold:true, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"본시수"}
       ,bonus:               {search_column:"bonus"            ,isNum:true ,isModi:false  ,align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"덤"}
       ,total_hits:          {search_column:"total_hits"       ,isNum:true ,isModi:false  ,isBold:true, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"총시수"}
-      ,apply_team_game:     {search_column:"apply_team_game"  ,isNum:true ,isModi:true  ,isBold:false, align:"right"  ,isSum:true  ,orderby:"asc"  ,name:"단체전"}
+      ,apply_team_game:     {search_column:"apply_team_game"  ,isNum:true ,isModi:true  ,isBold:false, align:"center"  ,isSum:true  ,orderby:"asc"  ,name:"단체전"}
       // ,ranking:             {search_column:"ranking"          ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"순위"}
       // ,shooting_group:      {search_column:"shooting_group"   ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"작대"}
       // ,shotting_seq:        {search_column:"shotting_seq"     ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"순서"}
@@ -65,6 +65,7 @@
     ,codeDefine:{
        ranking:{1:"장원", 2:"차상", 3:"차하", 0:""}
       ,gakgung:{1:"각죽", 0:""}
+      ,apply_team_game:{1:"참가", 0:"불참"}
     }
     ,pk:["gnum","mid"]
     ,isSelect:false
@@ -102,6 +103,7 @@
       ,age:             {search_column:"age"             ,isNum:true  ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"나이" }
       ,gakgung:         {search_column:"gakgung"         ,isNum:true ,isModi:false  ,align:"right"  ,orderby:"asc"  ,name:"각죽" }
       ,shooting_group:  {search_column:"shooting_group"  ,isNum:true  ,isModi:true  ,align:"right"  ,orderby:"asc"  ,name:"작대"}
+      ,shooting_seq:  {search_column:"shooting_seq"  ,isNum:true  ,isModi:true  ,align:"right"  ,orderby:"asc"  ,name:"순서"}
     }
     ,codeDefine:{
     }
